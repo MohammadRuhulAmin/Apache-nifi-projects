@@ -8,7 +8,7 @@ CREATE TABLE pax_master (
     "email.headers.message-id" TEXT
 );
 
-CREATE TABLE pax_details{
+CREATE TABLE pax_details(
 	id SERIAL PRIMARY KEY,
 	passport_no TEXT,
 	pax_master_id TEXT,
@@ -18,9 +18,9 @@ CREATE TABLE pax_details{
 	ticket_no TEXT
 	
 
-}
+)
 
-CREATE TABLE message_tbl{
+CREATE TABLE message_tbl(
 	"email.headers.subject" TEXT,
 	"email.headers.sent_date" TEXT,
 	"email.headers.from.0" TEXT,
@@ -30,4 +30,4 @@ CREATE TABLE message_tbl{
 	status INTEGER
 	
 
-}
+)
