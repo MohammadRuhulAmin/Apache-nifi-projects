@@ -1,17 +1,17 @@
-CREATE TABLE pax_master (
+CREATE TABLE public.pax_master (
     id SERIAL PRIMARY KEY,
     src INTEGER,
     airlines_code TEXT,
     flight_date TEXT,
     docs TEXT,
     flight_code TEXT,
-    "email.headers.message-id" TEXT
+    pax_id TEXT
 );
 
-CREATE TABLE pax_details(
+CREATE TABLE public.pax_details(
 	id SERIAL PRIMARY KEY,
 	passport_no TEXT,
-	pax_master_id TEXT,
+	pax_id TEXT,
 	pax_name TEXT,
 	is_archived TEXT,
 	docs TEXT,
@@ -20,12 +20,12 @@ CREATE TABLE pax_details(
 
 )
 
-CREATE TABLE message_tbl(
-	"email.headers.subject" TEXT,
-	"email.headers.sent_date" TEXT,
-	"email.headers.from.0" TEXT,
-	"email.headers.to.0" TEXT,
-	"email.headers.message-id" TEXT,
+CREATE TABLE public.message_tbl(
+	e_subject TEXT,
+	e_sent_date TEXT,
+	e_from TEXT,
+	e_to TEXT,
+	pax_id TEXT,
 	msgbody TEXT,
 	status INTEGER
 	
