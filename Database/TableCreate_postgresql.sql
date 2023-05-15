@@ -21,6 +21,7 @@ CREATE TABLE public.pax_details(
 )
 
 CREATE TABLE public.message_tbl(
+	id SERIAL PRIMARY KEY,
 	e_subject TEXT,
 	e_sent_date TEXT,
 	e_from TEXT,

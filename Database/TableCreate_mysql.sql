@@ -20,6 +20,7 @@ CREATE TABLE pax_details (
 
 
 CREATE TABLE message_tbl (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     e_subject TEXT,
     e_sent_date TEXT,
     e_from TEXT,
