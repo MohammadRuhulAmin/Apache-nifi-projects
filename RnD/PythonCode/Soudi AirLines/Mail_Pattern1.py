@@ -37,6 +37,13 @@ class PyOutputStreamCallback(OutputStreamCallback):
         outputStream.write(bytearray(self.data.encode('utf-8')))
 
 
+def date_timeFormatDate(Date):
+    month_dict = {'JAN': '01','FEB': '02','MAR': '03','APR': '04','MAY': '05','JUN': '06','JUL': '07','AUG': '08','SEP':'09','OCT': '10','NOV': '11','DEC': '12'}
+    m_date = re.findall(r'([A-Z]+)', Date)[0]
+    return datetime.datetime.now().strftime("%Y") + "-"+ month_dict.get(m_date,m_date) + "-" + re.findall(r'([0-9]+)',Date)[0]
+
+
+
 def process_data(email):
     pregex = r'(\d*\.)(.*\/\w*)(.*)(\d{13})(\s*AS\s+)(CPN SERIAL NUM \d{2,}\s*)(UI-[A-Z0-9]{0,}\s+)([A-z]{3}\s*\w+)?'
 
@@ -53,29 +60,30 @@ def process_data(email):
         "src": 0,
         "receieved_at":1111,
         "flight_code":re.search(r'[S][V]\d+', email).group(),
-        "flight_date":  re.search(r'\d{1,2}[A-Z]{3}',email).group(),
+        "flight_date": date_timeFormatDate(re.search(r'\d{1,2}[A-Z]{3}',email).group()),
         "docs": ""
         }  
 
     parsed_data = []
     for i in matches:
+        passport = i[7].split()
+        if bool(passport):
+            pax_details = {
+                    "pax_id":flowFile.getAttribute('email.headers.message-id'),
+                    "pax_name": i[1].replace("/"," "),
+                    "passport_no": passport[1],
+                    "ticket_no": i[3], 
+                    "is_archived": 0,
+                    "docs": ""
+                }
+            
+            parsed_data.append(pax_details)
 
-        pax_details = {
-                "pax_id":flowFile.getAttribute('email.headers.message-id'),
-                "pax_name": i[1],
-                "passport_no": i[7],
-                "ticket_no": i[3], 
-                "is_archived": 0,
-                "docs": ""
+            full_data = {
+                "pax_master" : [pax_master],
+                "pax_details" : parsed_data
+
             }
-        
-        parsed_data.append(pax_details)
-
-        full_data = {
-            "pax_master" : [pax_master],
-            "pax_details" : parsed_data
-
-        }
 
     return(json.dumps(full_data))
         
